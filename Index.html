@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MediaFlow - Free Media Downloader</title>
+
+<meta name="description" content="Download authorized video, audio and image files from direct media links. Free online media downloader.">
+
+<meta name="theme-color" content="#101827">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6fa;
+  color: #172033;
+  line-height: 1.6;
+}
+
+header {
+  background: #101827;
+  color: white;
+  padding: 18px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.logo span {
+  color: #ff5252;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 18px;
+  font-size: 14px;
+}
+
+.hero {
+  background: #101827;
+  color: white;
+  text-align: center;
+  padding: 65px 20px 85px;
+}
+
+.hero h1 {
+  font-size: clamp(30px, 6vw, 48px);
+  margin-bottom: 12px;
+}
+
+.hero p {
+  color: #c5cedd;
+  max-width: 600px;
+  margin: auto;
+}
+
+.container {
+  max-width: 760px;
+  margin: -38px auto 50px;
+  padding: 0 18px;
+}
+
+.download-box {
+  background: white;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 10px 35px rgba(0,0,0,.08);
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #d8deea;
+  border-radius: 9px;
+  font-size: 15px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #ef4444;
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 9px;
+  background: #ef4444;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+.status {
+  margin-top: 18px;
+  padding: 13px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  display: none;
+  overflow-wrap: anywhere;
+}
+
+.progress {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  margin-top: 12px;
+  overflow: hidden;
+  display: none;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #ef4444;
+  transition: width .2s;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.feature {
+  background: white;
+  padding: 20px 10px;
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(0,0,0,.04);
+}
+
+.feature h3 {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.feature p {
+  font-size: 12px;
+  color: #667085;
+}
+
+.info {
+  background: white;
+  padding: 25px;
+  margin-top: 25px;
+  border-radius: 12px;
+}
+
+.info h2 {
+  margin-bottom: 10px;
+  font-size: 21px;
+}
+
+.info p {
+  color: #596579;
+  font-size: 14px;
+}
+
+footer {
+  background: #101827;
+  color: #c5cedd;
+  text-align: center;
+  padding: 30px 15px;
+  font-size: 13px;
+}
+
+footer a {
+  color: white;
+  margin: 0 8px;
+}
+
+@media(max-width:550px) {
+  nav a { margin-left: 8px; font-size: 12px; }
+  .features { grid-template-columns: 1fr; }
+  .download-box { padding: 20px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Media<span>Flow</span></div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#help">Help</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <h1>Universal Media Downloader</h1>
+  <p>
+    Download authorized video, audio and image files
+    using direct media links.
+  </p>
+</section>
+
+<main class="container">
+
+  <section class="download-box">
+
+    <label for="mediaUrl">Paste Direct Media URL</label>
+
+    <input
+      type="url"
+      id="mediaUrl"
+      placeholder="https://example.com/video.mp4"
+      autocomplete="url"
+    >
+
+    <button id="downloadBtn" onclick="downloadMedia()">
+      ↓ Download Media
+    </button>
+
+    <div class="status" id="status"></div>
+
+    <div class="progress" id="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <p style="font-size:12px;color:#667085;margin-top:15px">
+      Maximum supported file size: 100 MB.
+      Your browser downloads the file directly from its source.
+    </p>
+
+  </section>
+
+  <section class="features">
+    <div class="feature">
+      <h3>🎬 Video</h3>
+      <p>MP4 and WebM</p>
+    </div>
+
+    <div class="feature">
+      <h3>🎵 Audio</h3>
+      <p>MP3, WAV, OGG, M4A</p>
+    </div>
+
+    <div class="feature">
+      <h3>🖼️ Images</h3>
+      <p>JPG, PNG, WebP, GIF</p>
+    </div>
+  </section>
+
+  <section class="info" id="about">
+    <h2>About MediaFlow</h2>
+    <p>
+      MediaFlow is a free browser-based tool for downloading
+      media files that users own or have permission to download.
+      It does not extract media from protected platform pages.
+    </p>
+  </section>
+
+  <section class="info" id="help">
+    <h2>How to Use</h2>
+    <p>
+      1. Copy an authorized direct media file URL.<br><br>
+      2. Paste the URL in the input field.<br><br>
+      3. Click Download Media.<br><br>
+      4. Your browser will save the supported file.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <p>© 2026 MediaFlow. All Rights Reserved.</p>
+  <br>
+  <a href="privacy.html">Privacy Policy</a>
+  <a href="terms.html">Terms</a>
+</footer>
+
+<script>
+
+async function downloadMedia() {
+
+  const input = document.getElementById("mediaUrl");
+  const button = document.getElementById("downloadBtn");
+  const status = document.getElementById("status");
+  const progress = document.getElementById("progress");
+  const progressBar = document.getElementById("progressBar");
+
+  const showStatus = (message) => {
+    status.style.display = "block";
+    status.textContent = message;
+  };
+
+  const urlValue = input.value.trim();
+
+  if (!urlValue) {
+    showStatus("Please enter a direct media URL.");
+    return;
+  }
+
+  let url;
+
+  try {
+    url = new URL(urlValue);
+
+    if (url.protocol !== "https:") {
+      throw new Error("HTTPS required");
+    }
+
+    const host = url.hostname.toLowerCase();
+
+    if (
+      host === "localhost" ||
+      host.endsWith(".localhost") ||
+      host === "127.0.0.1" ||
+      host === "::1" ||
+      host.endsWith(".local")
+    ) {
+      throw new Error("Local addresses are not allowed");
+    }
+
+  } catch (error) {
+    showStatus("Please enter a valid public HTTPS media URL.");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Downloading...";
+  progress.style.display = "block";
+  progressBar.style.width = "0%";
+
+  try {
+
+    const response = await fetch(url.href, {
+      method: "GET",
+      mode: "cors",
+      credentials: "omit",
+      redirect: "error"
+    });
+
+    if (!response.ok) {
+      throw new Error("Source returned HTTP " + response.status);
+    }
+
+    const type = (
+      response.headers.get("content-type") || ""
+    ).split(";")[0].trim().toLowerCase();
+
+    const allowedTypes = [
+      "video/mp4",
+      "video/webm",
+      "audio/mpeg",
+      "audio/mp4",
+      "audio/wav",
+      "audio/ogg",
+      "audio/webm",
+      "audio/x-wav",
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/gif"
+    ];
+
+    if (!allowedTypes.includes(type)) {
+      throw new Error("Unsupported media type: " + (type || "unknown"));
+    }
+
+    const total = Number(
+      response.headers.get("content-length") || 0
+    );
+
+    const maxSize = 100 * 1024 * 1024;
+
+    if (total > maxSize) {
+      throw new Error("File exceeds the 100 MB limit.");
+    }
+
+    const blob = await response.blob();
+
+    if (blob.size > maxSize) {
+      throw new Error("File exceeds the 100 MB limit.");
+    }
+
+    if (blob.size === 0) {
+      throw new Error("The media file is empty.");
+    }
+
+    const extensionMap = {
+      "video/mp4": "mp4",
+      "video/webm": "webm",
+      "audio/mpeg": "mp3",
+      "audio/mp4": "m4a",
+      "audio/wav": "wav",
+      "audio/x-wav": "wav",
+      "audio/ogg": "ogg",
+      "audio/webm": "webm",
+      "image/jpeg": "jpg",
+      "image/png": "png",
+      "image/webp": "webp",
+      "image/gif": "gif"
+    };
+
+    const extension = extensionMap[type];
+
+    const blobUrl = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.download = "mediaflow-download." + extension;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+
+    progressBar.style.width = "100%";
+
+    showStatus(
+      "Download started successfully! File size: " +
+      (blob.size / (1024 * 1024)).toFixed(2) + " MB"
+    );
+
+  } catch (error) {
+
+    showStatus(
+      "Download unavailable: " + error.message +
+      ". The source may block browser access (CORS), redirects, " +
+      "or direct downloads. Use its official download option."
+    );
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "↓ Download Media";
+
+  }
+}
+
+</script>
+
+</body>
+</html>
